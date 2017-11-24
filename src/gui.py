@@ -1,14 +1,17 @@
 from tkinter import *
+from scraper import *
 
 master = Tk()
 
 variable = StringVar(master)
-arr = ['a','b','c']
-i = 0
+faculties = scrapeFaculty()
 
-variable.set(arr[0])
+label = Label(master, text='Faculty Name')
+label.pack()
+listBox = Listbox(master)
+listBox.pack()
 
-menu = OptionMenu(master, variable, *arr)
-menu.pack()
+for key in sorted(faculties):
+    listBox.insert(END, key)
 
 master.mainloop()
