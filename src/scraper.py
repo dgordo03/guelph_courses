@@ -28,6 +28,36 @@ def buildingCodes():
                 build_name += name
         buildings[build_code] = build_name
 
+    return buildings
+
+def examInformation():
+    url = exam_base + "exam_fall"
+
+    response = requests.get(url)
+    html = response.content
+    soup = BeautifulSoup(html)
+
+    mainDiv = soup.find('div', attrs={'id':'main'})
+    containerDiv = mainDiv.find('div', attrs={'class':'container'})
+    contentDiv = containerDiv.find('div', attrs={'id':'content'})
+    table = contentDiv.find('table', attrs={'class':'exams'})
+    body = table.find('tbody')
+    
+    exams = []
+
+    for row in body.findAll('tr'):
+        curr_exam = row.findAll('td')
+        exam_info = {}
+        exam_info['date'] = curr_exam[2].text.replace('&nbsp', '')
+        exam_info['start'] = curr_exam[3].text.replace('&nbsp', '')
+        exam_info['end'] = curr_exam[4].text.replace('&nbsp', '')
+        exam_info['location'] = curr_exam[6].text.replace('&nbsp', '')
+        exams.append(exam_info)
+    
+    return exams
+
+examInformation()
+
 def scrapeCourse(page):
     url = base_url + page
     
