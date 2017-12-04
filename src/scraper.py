@@ -2,6 +2,31 @@ import requests
 from BeautifulSoup import BeautifulSoup
 
 base_url = 'https://www.uoguelph.ca/registrar/calendars/undergraduate/2017-2018/c12/'
+exam_base = "https://www.uoguelph.ca/registrar/scheduling/"
+ 
+def buildingCodes():
+    url = exam_base + "buildingcodes-col"
+    
+    response = requests.get(url)
+    html = response.content
+    soup = BeautifulSoup(html)
+
+    mainDiv = soup.find('div', attrs={'id':'main'})
+    containerDiv = mainDiv.find('div', attrs={'class':'container'})
+    contentDiv = containerDiv.find('div', attrs={'id':'content'})
+    buildings = {}
+
+    for code in contentDiv.findAll('p'):
+        full_name = code.text.replace('&nbsp', '')
+        full_name = full_name.encode('utf8')
+        temp_name = full_name.split('\xc2\xa0')
+        build_code = temp_name[0]
+        build_name = ''
+        temp_name.remove(build_code)
+        for name in temp_name:
+            if name != '':
+                build_name += name
+        buildings[build_code] = build_name
 
 def scrapeCourse(page):
     url = base_url + page
@@ -60,3 +85,6 @@ def scrapeFaculty():
             name = list_item.text.replace('&nbsp', '')
             faculty[name] = href
     return faculty
+
+
+buildingCodes()
