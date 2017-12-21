@@ -1,9 +1,30 @@
 import requests
 from BeautifulSoup import BeautifulSoup
+from selenium import webdriver
 
 base_url = "https://www.uoguelph.ca/registrar/calendars/undergraduate/\
 2017-2018/c12/"
 exam_base = "https://www.uoguelph.ca/registrar/scheduling/"
+
+
+def getAvailableTerms():
+	driver = webdriver.PhantomJS()
+	driver = webdriver.PhantomJS()
+	driver.get('https://webadvisor.uoguelph.ca/WebAdvisor/WebAdvisor?TYPE=M&PID=CORE-WBMAIN&TOKENIDX')
+	#driver.find_element_by_id('search_form_input_homepage').send_keys("realpython")
+	driver.find_element_by_class_name('WBST_Bars').click()
+	driver.find_element_by_class_name('subnav')
+	driver.find_element_by_xpath("//a[text()='Search for Sections']").click()
+	elems = driver.find_element_by_id('VAR1').get_attribute('innerHTML')
+	soup = BeautifulSoup(elems)
+	values = []
+	for option in soup.findAll('option'):
+		if option['value']:
+			values.append(option['value'])
+	#driver.find_element_by_tag_name('a')
+	#driver.find_element_by_id("search_button_homepage").click()
+	driver.quit()
+	return values
 
 
 def buildingCodes():
