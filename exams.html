@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Exam Schedules</title>
+  <meta name="Description" content="Exam Schedules">
+  <meta name="Author" content="Content">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <!--link rel="stylesheet" href="css/bootstrap.min.css"-->
+</head>
+
+<body>
+  <div class="container">
+    <ul class="nav nav-pills" id="search_selection">
+      <li class="active" id="class_id"><a href="#tab_class" data-toggle="pill">Class</a></li>
+      <li id="building_id"><a href="#tab_building" data-toggle="pill">Building</a></li>
+    </ul>
+
+    <input type="text" class="form-control" placeholder="Search" id="code_search">
+
+    <table class="table">
+      <tbody id="table_content" style="max-height:200px;overflow-y:auto;display:block;"></tbody>
+    </table>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab_class">
+          <h4>Class Search</h4>
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+              ac turpis egestas.</p>
+      </div>
+      <div class="tab-pane" id="tab_building">
+          <h4>Bulding Search</h4>
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+              ac turpis egestas.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBp7g_Fq9DKpYCRU-woOi8XsGz2z4RP1kU",
+      authDomain: "guelph-courses.firebaseapp.com",
+      databaseURL: "https://guelph-courses.firebaseio.com",
+      projectId: "guelph-courses",
+      storageBucket: "guelph-courses.appspot.com",
+      messagingSenderId: "656342432931"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script type="text/javascript" src="js/exams.js"></script>
+</body>
+</html>
