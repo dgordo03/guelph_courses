@@ -1,17 +1,29 @@
 var database = firebase.database();
-var buildings;
+var buildings = new Object();
+var exams = new Object();
 
 firebase.database().ref('/buildings/').once('value').then(function(snapshot) {
   $.each(snapshot.val(), function(key) {
-    buildings = JSON.parse(snapshot.val()[key]);
+    curr_building = JSON.parse(snapshot.val()[key]);
+    $.each(curr_building, function(building) {
+      buildings[building] = curr_building[building]
+    });
+  });
+});
+
+firebase.database().ref('/exams/').once('value').then(function(snapshot) {
+  $.each(snapshot.val(), function(key) {
+    curr_building = JSON.parse(snapshot.val()[key]);
+    $.each(curr_building, function(building) {
+      exams[building] = curr_building[building]
+    });
   });
 });
 
 $("#search_selection").click(function (e) {
-  console.log();
   var key = $("#code_search").val();
   $("#table_content").empty();
-  if ($(e.target).html() == "Class") {
+  if ($(e.target).html() == "Course") {
     //get firebase working first
   } else {
     $.each(buildings, function (acrnm) {
