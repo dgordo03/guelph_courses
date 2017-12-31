@@ -60,9 +60,11 @@ def getExams():
     exams = dict()
     for row in body.findAll('tr'):
         curr_exam = row.findAll('td')
+	course = curr_exam[0].text.replace('&nbsp', '')
 	date = curr_exam[2].text.replace('&nbsp', '')
         start = curr_exam[3].text.replace('&nbsp', '')
         end = curr_exam[4].text.replace('&nbsp', '')
+        instructor = curr_exam[5].text.replace('&nbsp', '')
 	locations = curr_exam[6].text.replace('&nbsp', '').split(',')
 	for i in range(0, len(locations)):
         	room = locations[i]
@@ -79,6 +81,7 @@ def getExams():
 			times = dict()
 			exam_info[date] = []
 			times[start] = end
+			times[course] = instructor
 			exam_info[date].append(times)
 			room_info[room] = exam_info
 			exams[building] = room_info
@@ -89,6 +92,7 @@ def getExams():
 				times = dict()
 				exam_info[date] = []
 				times[start] = end
+				times[course] = instructor
 				exam_info[date].append(times)
 				exams[building][room] = exam_info
 			else:
@@ -97,6 +101,7 @@ def getExams():
 					times = dict()
 					exam_info = []
 					times[start] = end
+					times[course] = instructor
 					exam_info.append(times)
 					exams[building][room][date] = exam_info
 				else:
@@ -104,11 +109,11 @@ def getExams():
 					times = dict()
 					exam_info = exams[building][room][date]
 					times[start] = end
+					times[course] = instructor
 					exam_info.append(times)
 					exams[building][room][date] = exam_info
     return exams
 
-getExams()
 
 def getCourses(page):
     url = base_url + page
@@ -119,7 +124,7 @@ def getCourses(page):
     contentDiv = mainDiv.find('div', attrs={'id': 'content'})
     all_courses = {}
     for courses in contentDiv.findAll('div', attrs={'class': 'course'}):
-        curr_course = {}
+	curr_course = {}
         prereq_course = {}
         restr_course = {}
         table = courses.find('table')
@@ -142,7 +147,8 @@ def getCourses(page):
                 href = prereq['href']
                 prereq_course[requisite] = href
         curr_course['prerequisites'] = prereq_course
-        all_courses[title] = curr_course
+        curr_course['title'] = title
+	all_courses[title] = curr_course
     return all_courses
 
 

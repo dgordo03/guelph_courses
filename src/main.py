@@ -28,26 +28,31 @@ def main():
 		exam_loc = dict()
 		exam_loc[exam] = exam_info[exam]
 		json_exam = json.dumps(exam_loc)
-		if i == 0:
-			updateFirebase.firebaseUpdate('exams', json_exam, url)
-		else:
-			updateFirebase.firebaseWrite('exams', json_exam, url)
+#		if i == 0:
+#			updateFirebase.firebaseUpdate('exams', json_exam, url)
+#		else:
+#			updateFirebase.firebaseWrite('exams', json_exam, url)
 		i = i + 1	
 
 	print '\n\nupdating terms...'
 	terms = scraper.getAvailableTerms()
 	#updateFirebase.firebaseUpdate("terms", terms, url)
 
-	#print 'updating faculties and their classes'
-	#faculty = scraper.getFaculties()
-	#a = []
-	#for name in faculty:
-	#	print 'updating ' +  name  + '...'
-	#	curr_faculty = scraper.getCourses(faculty[name])
-	#	for course in curr_faculty:
-	#		a.append(curr_faculty[course])
-	#fb = firebase.FirebaseApplication('https://guelph-courses.firebaseio.com/')
-	#updateFirebase.firebaseUpdate("classes", a, fb)
+	print 'updating faculties and their classes'
+	faculty = scraper.getFaculties()
+	i = 0
+	for name in faculty:
+		curr_course = []
+		print 'updating ' +  name  + '...'
+		curr_faculty = scraper.getCourses(faculty[name])
+		for course in curr_faculty:
+			curr_course.append(curr_faculty[course])
+		json_faculty = json.dumps(curr_course)
+		if i == 0:
+			updateFirebase.firebaseUpdate('classes', json_faculty, url)
+		else:
+			updateFirebase.firebaseWrite('classes', json_faculty, url)
+		i = i + 1
 
 if __name__ == "__main__":
 	main()
