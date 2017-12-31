@@ -3,25 +3,25 @@ import json
 import time
 
 
-firebase = firebase.FirebaseApplication('https://guelph-courses.firebaseio.com/')
+def firebaseGet(name, url):
+	fb = firebase.FirebaseApplication(url)
+	result = fb.get(name, None)
+	return result
 
+def firebaseWrite(name, data, url):
+	fb = firebase.FirebaseApplication(url)
+	fb.post(name, data)
 
-def firebaseGet(name):
-    result = firebase.get(name, None)
-    return result
+def firebaseDelete(name, key, url):
+	fb = firebase.FirebaseApplication(url)
+	fb.delete(name, key)
 
-def firebaseWrite(name, data):
-    firebase.post(name, data)
-
-def firebaseDelete(name, key):
-    firebase.delete(name, key)
-
-def firebaseUpdate(name, data):
-    result = firebaseGet(name)
-    if result == None:
-        firebaseWrite(name, data)
-    else:
-        for key in result:
-            deleteKey = key
-        firebaseDelete(name, deleteKey)
-        firebaseWrite(name, data)
+def firebaseUpdate(name, data, url):
+	result = firebaseGet(name, url)
+	if result == None:
+		firebaseWrite(name, data, url)
+	else:
+		for key in result:
+			deleteKey = key
+			firebaseDelete(name, deleteKey, url)
+			firebaseWrite(name, data, url)

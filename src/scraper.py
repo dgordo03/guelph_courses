@@ -11,7 +11,6 @@ def getAvailableTerms():
 	driver = webdriver.PhantomJS()
 	driver = webdriver.PhantomJS()
 	driver.get('https://webadvisor.uoguelph.ca/WebAdvisor/WebAdvisor?TYPE=M&PID=CORE-WBMAIN&TOKENIDX')
-	#driver.find_element_by_id('search_form_input_homepage').send_keys("realpython")
 	driver.find_element_by_class_name('WBST_Bars').click()
 	driver.find_element_by_class_name('subnav')
 	driver.find_element_by_xpath("//a[text()='Search for Sections']").click()
@@ -21,13 +20,11 @@ def getAvailableTerms():
 	for option in soup.findAll('option'):
 		if option['value']:
 			values.append(option['value'])
-	#driver.find_element_by_tag_name('a')
-	#driver.find_element_by_id("search_button_homepage").click()
 	driver.quit()
 	return values
 
 
-def buildingCodes():
+def getBuildingCodes():
     url = exam_base + "buildingcodes-col"
     response = requests.get(url)
     html = response.content
@@ -50,7 +47,7 @@ def buildingCodes():
     return buildings
 
 
-def examInformation():
+def getExams():
     url = exam_base + "exam_fall"
     response = requests.get(url)
     html = response.content
@@ -60,19 +57,58 @@ def examInformation():
     contentDiv = containerDiv.find('div', attrs={'id': 'content'})
     table = contentDiv.find('table', attrs={'class': 'exams'})
     body = table.find('tbody')
-    exams = []
+    exams = dict()
     for row in body.findAll('tr'):
         curr_exam = row.findAll('td')
-        exam_info = {}
-        exam_info['date'] = curr_exam[2].text.replace('&nbsp', '')
-        exam_info['start'] = curr_exam[3].text.replace('&nbsp', '')
-        exam_info['end'] = curr_exam[4].text.replace('&nbsp', '')
-        exam_info['location'] = curr_exam[6].text.replace('&nbsp', '')
-        exams.append(exam_info)
+	date = curr_exam[2].text.replace('&nbsp', '')
+        start = curr_exam[3].text.replace('&nbsp', '')
+        end = curr_exam[4].text.replace('&nbsp', '')
+	locations = curr_exam[6].text.replace('&nbsp', '').split(',')
+	for i in range(0, len(locations)):
+        	room = locations[i]
+		if i > 0:
+        		room = room.encode('utf8')
+        		room = room.replace('\xc2\xa0 ', '')
+		if not room:
+			continue
+		building = room.split(' ')[0]
+		#3. check if building exists, then room, and add to list
+		if building not in exams:
+			room_info = dict()
+			exam_info = dict()
+			times = dict()
+			exam_info[date] = []
+			times[start] = end
+			exam_info[date].append(times)
+			room_info[room] = exam_info
+			exams[building] = room_info
+		else:
+			#check if room exists, check if date exists, check if time exists
+			if room not in exams[building]:
+				exam_info = dict()
+				times = dict()
+				exam_info[date] = []
+				times[start] = end
+				exam_info[date].append(times)
+				exams[building][room] = exam_info
+			else:
+				#check if date exists
+				if date not in exams[building][room]:
+					times = dict()
+					exam_info = []
+					times[start] = end
+					exam_info.append(times)
+					exams[building][room][date] = exam_info
+				else:
+					#date exists
+					times = dict()
+					exam_info = []
+					times[start] = end
+					exam_info.append(times)
+					exams[building][room][date].append(exam_info)
     return exams
 
-
-def scrapeCourse(page):
+def getCourses(page):
     url = base_url + page
     response = requests.get(url)
     html = response.content
@@ -108,7 +144,7 @@ def scrapeCourse(page):
     return all_courses
 
 
-def scrapeFaculty():
+def getFaculties():
     url = base_url + 'index.shtml'
     response = requests.get(url)
     html = response.content
