@@ -102,11 +102,13 @@ def getExams():
 				else:
 					#date exists
 					times = dict()
-					exam_info = []
+					exam_info = exams[building][room][date]
 					times[start] = end
 					exam_info.append(times)
-					exams[building][room][date].append(exam_info)
+					exams[building][room][date] = exam_info
     return exams
+
+getExams()
 
 def getCourses(page):
     url = base_url + page

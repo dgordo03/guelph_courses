@@ -19,6 +19,7 @@ def main():
 		#else:
 		#	updateFirebase.firebaseWrite('buildings', json_building, url)
 		i = i + 1
+	
 	print '\n\nupdating exam locations...'
 	exam_info = scraper.getExams()
 	i = 0
@@ -27,15 +28,15 @@ def main():
 		exam_loc = dict()
 		exam_loc[exam] = exam_info[exam]
 		json_exam = json.dumps(exam_loc)
-		#if i == 0:
-		#	updateFirebase.firebaseUpdate('exams', json_exam, url)
-		#else:
-		#	updateFirebase.firebaseWrite('exams', json_exam, url)
+		if i == 0:
+			updateFirebase.firebaseUpdate('exams', json_exam, url)
+		else:
+			updateFirebase.firebaseWrite('exams', json_exam, url)
 		i = i + 1	
 
 	print '\n\nupdating terms...'
 	terms = scraper.getAvailableTerms()
-	updateFirebase.firebaseUpdate("terms", terms, url)
+	#updateFirebase.firebaseUpdate("terms", terms, url)
 
 	#print 'updating faculties and their classes'
 	#faculty = scraper.getFaculties()
