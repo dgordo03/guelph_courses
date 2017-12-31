@@ -31,9 +31,20 @@
               ac turpis egestas.</p>
       </div>
       <div class="tab-pane" id="tab_building">
-          <h4>Bulding Search</h4>
-          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-              ac turpis egestas.</p>
+        <div class="form-group">
+          <label for="sel1">Class Room List:</label>
+          <select id="room_list" class="form-control" id="sel1">
+            <option>No Building Selected</option>
+          </select>
+        </div>
+        <div id="date_group" class="form-group" style="display:none;">
+          <label for="sel2">Date Selected:</label>
+          <select id="date_list" class="form-control" id="sel2">
+            <option>No Date Selected</option>
+          </select>
+        </div>
+        <ul class="list-group" style="display:none;" id="exam_times">
+        </ul>
       </div>
     </div>
   </div>
