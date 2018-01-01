@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Exam Schedules</title>
+  <meta name="Description" content="Exam Schedules">
+  <meta name="Author" content="Content">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <!--link rel="stylesheet" href="../css/bootstrap.min.css"-->
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <ul class="nav navbar-nav">
+          <li><a class="glyphicon glyphicon-home" href="../index.html"></a></li>
+        </ul>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="./exams.html">Exam Schedule</a></li>
+          <li class="active"><a href="./schedule.html">Class Schedule</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="form-group col-xs-12 col-sm-4">
+      <label for="sel1">Subject</label>
+      <select id="subject_list" class="form-control" id="sel1">
+        <option>No Available Subjects</option>
+      </select>
+    </div>
+    <div class="form-group col-xs-12 col-sm-4">
+      <label for="sel2">Course Level</label>
+      <select id="level_list" class="form-control" id="sel2">
+        <option>No Available Levels</option>
+      </select>
+    </div>
+    <div class="form-group col-xs-12 col-sm-4">
+      <label for="exampleInputName2">Course Number</label>
+      <input type="text" class="form-control" id="course_number" placeholder="1000">
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <button type="submit" class="btn btn-default col-xs-12">Search</button>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBp7g_Fq9DKpYCRU-woOi8XsGz2z4RP1kU",
+      authDomain: "guelph-courses.firebaseapp.com",
+      databaseURL: "https://guelph-courses.firebaseio.com",
+      projectId: "guelph-courses",
+      storageBucket: "guelph-courses.appspot.com",
+      messagingSenderId: "656342432931"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script type="text/javascript" src="../js/schedule.js"></script>
+</body>
+</html>
