@@ -1,13 +1,15 @@
 import requests
 from BeautifulSoup import BeautifulSoup
 from selenium import webdriver
+import signal
+
 
 base_url = "https://www.uoguelph.ca/registrar/calendars/undergraduate/\
 2017-2018/c12/"
 exam_base = "https://www.uoguelph.ca/registrar/scheduling/"
 
 
-def getAvailableTerms():
+def getSearchCriteria():
 	driver = webdriver.PhantomJS()
 	driver = webdriver.PhantomJS()
 	driver.get('https://webadvisor.uoguelph.ca/WebAdvisor/WebAdvisor?TYPE=M&PID=CORE-WBMAIN&TOKENIDX')
@@ -16,12 +18,29 @@ def getAvailableTerms():
 	driver.find_element_by_xpath("//a[text()='Search for Sections']").click()
 	elems = driver.find_element_by_id('VAR1').get_attribute('innerHTML')
 	soup = BeautifulSoup(elems)
-	values = []
+	inform = {}
+	terms = []
 	for option in soup.findAll('option'):
 		if option['value']:
-			values.append(option['value'])
+			terms.append(option['value'])
+	elems = driver.find_element_by_id('LIST_VAR1_1').get_attribute('innerHTML')
+	soup = BeautifulSoup(elems)
+	subjects = []
+	for option in soup.findAll('option'):
+		if option['value']:
+			subjects.append(option['value'])
+	elems = driver.find_element_by_id('LIST_VAR2_1').get_attribute('innerHTML')
+	soup = BeautifulSoup(elems)
+	levels = []
+	for option in soup.findAll('option'):
+		if option['value']:
+			levels.append(option['value'])
+	inform['terms'] = terms
+	inform['subjects'] = subjects
+	inform['course_levels'] = levels
+	driver.service.process.send_signal(signal.SIGTERM)
 	driver.quit()
-	return values
+	return inform
 
 
 def getBuildingCodes():

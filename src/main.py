@@ -34,9 +34,11 @@ def main():
 #			updateFirebase.firebaseWrite('exams', json_exam, url)
 		i = i + 1	
 
-	print '\n\nupdating terms...'
-	terms = scraper.getAvailableTerms()
-	#updateFirebase.firebaseUpdate("terms", terms, url)
+	print '\n\nupdating current class information...'
+	terms = scraper.getSearchCriteria()
+	for info in terms:
+		json_info = json.dumps(terms[info])
+		updateFirebase.firebaseUpdate(info, json_info, url)
 
 	print 'updating faculties and their classes'
 	faculty = scraper.getFaculties()
@@ -48,11 +50,12 @@ def main():
 		for course in curr_faculty:
 			curr_course.append(curr_faculty[course])
 		json_faculty = json.dumps(curr_course)
-		if i == 0:
-			updateFirebase.firebaseUpdate('classes', json_faculty, url)
-		else:
-			updateFirebase.firebaseWrite('classes', json_faculty, url)
+#		if i == 0:
+#			updateFirebase.firebaseUpdate('classes', json_faculty, url)
+#		else:
+#			updateFirebase.firebaseWrite('classes', json_faculty, url)
 		i = i + 1
+
 
 if __name__ == "__main__":
 	main()
