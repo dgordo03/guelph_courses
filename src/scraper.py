@@ -10,38 +10,39 @@ exam_base = "https://www.uoguelph.ca/registrar/scheduling/"
 
 
 def getSearchCriteria():
-	driver = webdriver.PhantomJS()
-	driver = webdriver.PhantomJS()
-	driver.get('https://webadvisor.uoguelph.ca/WebAdvisor/WebAdvisor?TYPE=M&PID=CORE-WBMAIN&TOKENIDX')
-	driver.find_element_by_class_name('WBST_Bars').click()
-	driver.find_element_by_class_name('subnav')
-	driver.find_element_by_xpath("//a[text()='Search for Sections']").click()
-	elems = driver.find_element_by_id('VAR1').get_attribute('innerHTML')
-	soup = BeautifulSoup(elems)
-	inform = {}
-	terms = []
-	for option in soup.findAll('option'):
-		if option['value']:
-			terms.append(option['value'])
-	elems = driver.find_element_by_id('LIST_VAR1_1').get_attribute('innerHTML')
-	soup = BeautifulSoup(elems)
-	subjects = []
-	for option in soup.findAll('option'):
-		if option['value']:
-			subjects.append(option['value'])
-	elems = driver.find_element_by_id('LIST_VAR2_1').get_attribute('innerHTML')
-	soup = BeautifulSoup(elems)
-	levels = []
-	for option in soup.findAll('option'):
-		if option['value']:
-			levels.append(option['value'])
-	inform['terms'] = terms
-	inform['subjects'] = subjects
-	inform['course_levels'] = levels
-	driver.service.process.send_signal(signal.SIGTERM)
-	driver.quit()
-	return inform
-
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1200x600')
+    driver = webdriver.Chrome(chrome_options=options)
+    driver.get('https://webadvisor.uoguelph.ca/WebAdvisor/WebAdvisor?TYPE=M&PID=CORE-WBMAIN&TOKENIDX')
+    driver.find_element_by_class_name('WBST_Bars').click()
+    driver.find_element_by_class_name('subnav')
+    driver.find_element_by_xpath("//a[text()='Search for Sections']").click()
+    elems = driver.find_element_by_id('VAR1').get_attribute('innerHTML')
+    soup = BeautifulSoup(elems)
+    inform = {}
+    terms = []
+    for option in soup.findAll('option'):
+            if option['value']:
+                    terms.append(option['value'])
+    elems = driver.find_element_by_id('LIST_VAR1_1').get_attribute('innerHTML')
+    soup = BeautifulSoup(elems)
+    subjects = []
+    for option in soup.findAll('option'):
+            if option['value']:
+                    subjects.append(option['value'])
+    elems = driver.find_element_by_id('LIST_VAR2_1').get_attribute('innerHTML')
+    soup = BeautifulSoup(elems)
+    levels = []
+    for option in soup.findAll('option'):
+            if option['value']:
+                    levels.append(option['value'])
+    inform['terms'] = terms
+    inform['subjects'] = subjects
+    inform['course_levels'] = levels
+    driver.service.process.send_signal(signal.SIGTERM)
+    driver.quit()
+    return inform
 
 def getBuildingCodes():
     url = exam_base + "buildingcodes-col"
@@ -79,58 +80,66 @@ def getExams():
     exams = dict()
     for row in body.findAll('tr'):
         curr_exam = row.findAll('td')
-	course = curr_exam[0].text.replace('&nbsp', '')
-	date = curr_exam[2].text.replace('&nbsp', '')
+        course = curr_exam[0].text.replace('&nbsp', '')
+        date = curr_exam[2].text.replace('&nbsp', '')
         start = curr_exam[3].text.replace('&nbsp', '')
         end = curr_exam[4].text.replace('&nbsp', '')
         instructor = curr_exam[5].text.replace('&nbsp', '')
-	locations = curr_exam[6].text.replace('&nbsp', '').split(',')
-	for i in range(0, len(locations)):
-        	room = locations[i]
-		if i > 0:
-        		room = room.encode('utf8')
-        		room = room.replace('\xc2\xa0 ', '')
-		if not room:
-			continue
-		building = room.split(' ')[0]
-		#3. check if building exists, then room, and add to list
-		if building not in exams:
-			room_info = dict()
-			exam_info = dict()
-			times = dict()
-			exam_info[date] = []
-			times[start] = end
-			times[course] = instructor
-			exam_info[date].append(times)
-			room_info[room] = exam_info
-			exams[building] = room_info
-		else:
-			#check if room exists, check if date exists, check if time exists
-			if room not in exams[building]:
-				exam_info = dict()
-				times = dict()
-				exam_info[date] = []
-				times[start] = end
-				times[course] = instructor
-				exam_info[date].append(times)
-				exams[building][room] = exam_info
-			else:
-				#check if date exists
-				if date not in exams[building][room]:
-					times = dict()
-					exam_info = []
-					times[start] = end
-					times[course] = instructor
-					exam_info.append(times)
-					exams[building][room][date] = exam_info
-				else:
-					#date exists
-					times = dict()
-					exam_info = exams[building][room][date]
-					times[start] = end
-					times[course] = instructor
-					exam_info.append(times)
-					exams[building][room][date] = exam_info
+        locations = curr_exam[6].text.replace('&nbsp', '').split(',')
+        for i in range(0, len(locations)):
+                room = locations[i]
+                if i > 0:
+                        room = room.encode('utf8')
+                        room = room.replace('\xc2\xa0 ', '')
+                if not room:
+                        continue
+                building = room.split(' ')[0]
+                #3. check if building exists, then room, and add to list
+                if building not in exams:
+                        room_info = dict()
+                        exam_info = dict()
+                        times = dict()
+                        exam_info[date] = []
+                        times['start'] = start
+                        times['end'] = end
+                        times['course'] = course
+                        times['instructor'] = instructor
+                        exam_info[date].append(times)
+                        room_info[room] = exam_info
+                        exams[building] = room_info
+                else:
+                        #check if room exists, check if date exists, check if time exists
+                        if room not in exams[building]:
+                                exam_info = dict()
+                                times = dict()
+                                exam_info[date] = []
+                                times['start'] = start
+                                times['end'] = end
+                                times['course'] = course
+                                times['instructor'] = instructor
+                                exam_info[date].append(times)
+                                exams[building][room] = exam_info
+                        else:
+                                #check if date exists
+                                if date not in exams[building][room]:
+                                        times = dict()
+                                        exam_info = []
+                                        times['start'] = start
+                                        times['end'] = end
+                                        times['course'] = course
+                                        times['instructor'] = instructor
+                                        exam_info.append(times)
+                                        exams[building][room][date] = exam_info
+                                else:
+                                        #date exists
+                                        times = dict()
+                                        exam_info = exams[building][room][date]
+                                        times['start'] = start
+                                        times['end'] = end
+                                        times['course'] = course
+                                        times['instructor'] = instructor
+                                        exam_info.append(times)
+                                        exams[building][room][date] = exam_info
     return exams
 
 
@@ -143,7 +152,7 @@ def getCourses(page):
     contentDiv = mainDiv.find('div', attrs={'id': 'content'})
     all_courses = {}
     for courses in contentDiv.findAll('div', attrs={'class': 'course'}):
-	curr_course = {}
+        curr_course = {}
         prereq_course = {}
         restr_course = {}
         table = courses.find('table')
@@ -167,7 +176,7 @@ def getCourses(page):
                 prereq_course[requisite] = href
         curr_course['prerequisites'] = prereq_course
         curr_course['title'] = title
-	all_courses[title] = curr_course
+        all_courses[title] = curr_course
     return all_courses
 
 
