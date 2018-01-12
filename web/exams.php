@@ -11,7 +11,6 @@
       .scroll-section {
         max-height : 200px;
         overflow-y : auto;
-        /* display : block; */
       }
     </style>
   </head>
@@ -42,15 +41,12 @@
           <div class="col-sm-2 col-xs-12">
             <button class="btn btn-default" id="course_btn">Search</button>
           </div>
-          <table class="table">
-            <tbody id="course_table" style="max-height:200px;overflow-y:auto;display:block;"></tbody>
-          </table>
         </div>
         <?php
         print "<div class=\"tab-pane $building_active\" id=\"tab_building\">"
         ?>
           <input type="text" class="form-control" placeholder="Search" id="building_search">
-          <div class="list-group scroll-section" style="display:block;">
+          <div class="list-group scroll-section" id="buildings-list">
             <?php
             $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
             $query = "SELECT * FROM buildings ORDER BY building";
@@ -160,6 +156,6 @@
     </div>
     <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="../js/exams.js"></script> -->
+    <script type="text/javascript" src="../js/exams.js"></script>
   </body>
 </html>
