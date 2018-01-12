@@ -6,8 +6,8 @@
     <title>Main Page</title>
     <meta name="Description" content="Main Page">
     <meta name="Author" content="Content">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <!--link rel="stylesheet" href="css/bootstrap.min.css"-->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
   </head>
   <body>
     <ul class="nav nav-pills nav-stacked">
