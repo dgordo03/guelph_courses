@@ -186,10 +186,15 @@ def getFaculties():
     html = response.content
     soup = BeautifulSoup(html)
     div = soup.find('div', attrs={'id': 'sidebar'})
-    faculty = {}
+    faculties = []
     for unorderd_list in div.findAll('ul'):
         for list_item in unorderd_list.findAll('a'):
+            faculty = {}
             href = list_item['href']
             name = list_item.text.replace('&nbsp', '')
-            faculty[name] = href
-    return faculty
+            faculty["name"] = name
+            faculty["href"] = href
+            temp = href.replace("./c12", "")
+            faculty["acrnm"] = temp.replace(".shtml", "")
+            faculties.append(faculty)
+    return faculties

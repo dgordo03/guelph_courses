@@ -35,24 +35,58 @@
         <?php
         print "<div class=\"tab-pane $course_active\" id=\"tab_course\">"
         ?>
-          <div class="col-sm-10 col-xs-12">
-            <input type="text" class="form-control" placeholder="Search" id="course_search">
+          <input type="text" class="form-control" placeholder="Search Course" name="course" id="course_search">
+          <div class="list-group scroll-section" id="course-list">
+            <?php
+            $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+            $query = "SELECT * FROM faculties ORDER BY COURSE";
+            if ($r = mysqli_query($dbc, $query)) {
+              while ($row = mysqli_fetch_array($r)) {
+                $course = str_replace("*", " ", $row['COURSE']);
+                print "<a href=\"exams.php?course={$row['COURSE_ACR']}\" class='list-group-item'>$course</a>";
+              }
+            } else {
+              print "<p>Could not connect to database.</p>";
+            }
+            mysqli_close($dbc);
+            ?>
           </div>
-          <div class="col-sm-2 col-xs-12">
-            <button class="btn btn-default" id="course_btn">Search</button>
-          </div>
+          <?php
+          if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!empty($_GET['course'])) {
+              $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+              $course = str_replace("*", "", $_GET['course']);
+              $query = "SELECT ROOM, DATE, START, INSTRUCTOR, END FROM exams WHERE COURSE = '$course' ORDER BY DATE";
+              if ($r = mysqli_query($dbc, $query)) {
+                if ($r->num_rows > 0) {
+                  echo "<div class=\"panel panel-default\">";
+                  echo "<table class=\"table\">";
+                  echo "<thead><tr><th>Date</th><th>Start Time</th><th>End Time</th><th>Date</th><th>Instructor</th></tr></thead>";
+                  echo "<tbody>";
+                  while ($row = mysqli_fetch_array($r)) {
+                    echo "<tr><td>{$row['DATE']}</td><td>{$row['START']}</td><td>{$row['END']}</td><td>{$row['DATE']}</td><td>{$row['INSTRUCTOR']}</td></tr>";
+                  }
+                  echo "</table></div>";
+                } else {
+                  echo "<p>No Exams Scheduled for {$_GET['course']}</p>";
+                }
+              }
+              mysqli_close($dbc);
+            }
+          }
+          ?>
         </div>
         <?php
         print "<div class=\"tab-pane $building_active\" id=\"tab_building\">"
         ?>
-          <input type="text" class="form-control" placeholder="Search" id="building_search">
+          <input type="text" class="form-control" placeholder="Search Building" id="building_search">
           <div class="list-group scroll-section" id="buildings-list">
             <?php
             $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
             $query = "SELECT * FROM buildings ORDER BY building";
             if ($r = mysqli_query($dbc, $query)) {
               while ($row = mysqli_fetch_array($r)) {
-                print "<a href=\"exams.php?building={$row['ACRONYM']}\" class='list-group-item'>{$row['BUILDING']}\t{$row['ACRONYM']}</a>";
+                print "<a href=\"exams.php?building={$row['ACRONYM']}\" class='list-group-item'>{$row['BUILDING']}  ({$row['ACRONYM']})</a>";
               }
             } else {
               print "<p>Could not connect to database.</p>";
@@ -65,14 +99,14 @@
             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
               if (!empty($_GET['building'])) {
                 $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
-                $query = "SELECT ROOM FROM exams WHERE BUILDING = '{$_GET['building']}'";
+                $query = "SELECT ROOM FROM exams WHERE BUILDING = '{$_GET['building']}' ORDER BY ROOM";
                 if ($r = mysqli_query($dbc, $query)) {
                   $rooms = [];
                   while ($row = mysqli_fetch_array($r)) {
                     if (empty($rooms)) {
                       echo '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       if (empty($_GET['room'])) {
-                        echo 'Select a Class <span class="caret"></span></button>';
+                        echo 'Select a Room <span class="caret"></span></button>';
                       } else {
                         echo "{$_GET['room']} <span class=\"caret\"></span></button>";
                       }
@@ -91,6 +125,7 @@
                     echo "</ul>";
                   }
                 }
+                mysqli_close($dbc);
               }
             } else {
               echo '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
@@ -123,6 +158,7 @@
                     }
                   }
                 }
+                mysqli_close($dbc);
               }
             }
             ?>
@@ -137,7 +173,7 @@
           if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (!empty($_GET['date'])) {
               $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
-              $query = "SELECT START, END, INSTRUCTOR, COURSE FROM exams WHERE ROOM = '{$_GET['room']}' AND DATE = '{$_GET['date']}'";
+              $query = "SELECT START, END, INSTRUCTOR, COURSE FROM exams WHERE ROOM = '{$_GET['room']}' AND DATE = '{$_GET['date']}' ORDER BY END";
               if ($r = mysqli_query($dbc, $query)) {
                 echo "<div class=\"panel panel-default\">";
                 echo "<table class=\"table\">";
@@ -148,6 +184,7 @@
                 }
                 echo "</tbody></table>";
               }
+              mysqli_close($dbc);
             }
           }
           ?>
