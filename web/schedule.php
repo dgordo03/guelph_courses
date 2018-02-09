@@ -18,8 +18,30 @@
     <?php include("header.php"); ?>
 
     <div class="container">
-      <!--form class="" action="index.html" method="post"-->
       <form>
+        <div class="form-group col-xs-12">
+          <label for="terms">Term</label>
+          <select class="form-control" id="terms" name="course_term">
+            <?php
+            $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+            $query = "SELECT TERM FROM terms ORDER BY TERM";
+            if ($r = mysqli_query($dbc, $query)) {
+              while ($row = mysqli_fetch_array($r)) {
+                $selected = "";
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                  if (!empty($_GET['course_term']) && $_GET['course_term'] == $row['TERM']) {
+                    $selected = "selected";
+                  }
+                }
+                echo "<option $selected>{$row['TERM']}</option>";
+              }
+            } else {
+              echo '<option>No Available Subjects</option>';
+            }
+            mysqli_close($dbc);
+            ?>
+          </select>
+        </div>
         <div class="form-group col-xs-12 col-sm-4">
           <label for="subject">Subject</label>
           <select id="subject_list" class="form-control" id="subject" name="course_subject">
