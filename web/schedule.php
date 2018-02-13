@@ -108,11 +108,12 @@
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (!empty($_GET['course_number'])) {
-        $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\test.py';
+        $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\src\\getCourse.py';
         $python = 'C:\\Python27\\python.exe';
         $cmd = "$python $pyscript";
-        exec($cmd, $output);
+        exec($cmd, $output, $ret);
         print_r($output);
+        print $ret;
       }
     }
     ?>
