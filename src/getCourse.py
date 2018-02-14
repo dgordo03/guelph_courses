@@ -85,13 +85,24 @@ def main():
             meeting
             faculty
             capacity
+            link
         except NameError:
             pass
         else:
-            string = meeting
-            string += faculty
-            string += capacity
-            print string
+            if meeting and faculty and capacity and link:
+                meet_info = "meeting="
+                for curr_meet in meeting:
+                    meet_info += curr_meet + " NEXT "
+                faculty_info = "faculty="
+                for curr_fac in faculty:
+                    faculty_info += curr_fac + " NEXT "
+                capacity_info = "capacity="
+                for curr_cap in capacity:
+                    capacity_info += curr_cap + " NEXT "
+                link_info = "link="
+                for curr_link in link:
+                    link_info += curr_link + " NEXT "
+                print meet_info + " " + faculty_info + " " + capacity_info + " " + link_info
 
     driver.service.process.send_signal(signal.SIGTERM)
     driver.quit()
