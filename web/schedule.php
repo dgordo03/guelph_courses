@@ -107,15 +107,32 @@
     </div>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-      if (!empty($_GET['course_number'])) {
-        $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\src\\getCourse.py';
-        $python = 'C:\\Python27\\python.exe';
-        $cmd = "$python $pyscript";
-        exec($cmd, $output, $ret);
-        print_r($output);
-        print $ret;
+      if (!empty($_GET['course_term'])) {
+        $args['term'] = $_GET['course_term'];
+        if (!empty($_GET['course_number'])) {
+          $args['number'] = $_GET['course_number'];
+        }
+        if (!empty($_GET['course_subject'])) {
+          $args['subject'] = $_GET['course_subject'];
+        }
+        if (!empty($_GET['course_level'])) {
+          $args['level'] = $_GET['course_level'];
+        }
+        if (sizeof($args) > 3) {
+          $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\src\\getCourse.py';
+          $python = 'C:\\Python27\\python.exe';
+          $args_str = "";
+          foreach ($args as $key => $value) {
+              $args_str .= " {$key}={$value}";
+          }
+          $cmd = "$python $pyscript $args_str";
+          print '<br />';
+          exec($cmd, $output, $ret);
+          print_r($output);
+          print $ret;
+        }
       }
-    }
+      }
     ?>
   </body>
 </html>
