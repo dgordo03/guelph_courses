@@ -7,6 +7,7 @@
     <meta name="Description" content="Exam Schedules">
     <meta name="Author" content="Content">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/modal.css">
     <style>
       .scroll-section {
         max-height : 200px;
@@ -101,7 +102,7 @@
           ?>
         </div>
         <div class="col-sm-4 col-xs-12">
-          <button type="submit" class="btn btn-default col-xs-12">Search</button>
+          <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#myModal">Search</button>
         </div>
       </form>
     </div>
@@ -192,7 +193,24 @@
   <div class="col-md-6 calendar">
     <?php include("calendar.php"); ?>
   </div>
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h4>Getting Information. Please Wait...</h4>
+          <div class="loader"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
   <script src="../js/jquery-3.2.1.min.js"></script>
   <script src="../js/schedule.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
 </html>

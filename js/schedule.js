@@ -40,7 +40,9 @@ $(document).ready(function() {
 
 
   $(".section").click(function (e) {
-    var hoverClass = JSON.parse(localStorage['hoverClass']) || NULL;
+    var hoverClass = localStorage.getItem('hoverClass') != null ? JSON.parse(localStorage['hoverClass']) : {};
+    var currClass = localStorage.getItem('selectedClass') != null ? JSON.parse(localStorage['selectedClass']) : {};
+    calendar(currClass, "white");
     calendar(hoverClass, "pink");
     localStorage['selectedClass'] = JSON.stringify(hoverClass);
   });
@@ -92,4 +94,7 @@ $(document).ready(function() {
       calendar(hoverClass, "red");
     }
   });
+
+  var initialClasses = localStorage.getItem('selectedClass') != null ? JSON.parse(localStorage['selectedClass']) : {};
+  calendar(initialClasses, "pink");
 });
