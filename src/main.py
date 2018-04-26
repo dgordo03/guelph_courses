@@ -141,15 +141,15 @@ def getFaculties():
 def main():
 	# print 'updating buildings...'
 	# updateBuildings()
-    #
+	#
 	# print '\n\nupdating exam locations...'
 	# updateExams()
-    #
-	# print '\n\nupdating current class information...'
-	# updateCurrentCourseInfo()
 
-	print '\n\nupdating faculties'
-	getFaculties()
+	print '\n\nupdating current class information...'
+	updateCurrentCourseInfo()
+
+	# print '\n\nupdating faculties'
+	# getFaculties()
 	return
 
 

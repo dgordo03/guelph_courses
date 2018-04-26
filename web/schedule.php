@@ -105,7 +105,7 @@
         </div>
       </form>
     </div>
-    <div class="container course_information">
+    <div class="col-xs-12 col-md-6 course_information">
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (!empty($_GET['course_term'])) {
@@ -160,27 +160,27 @@
             $capacity = explode("NEXT", $capacity);
             $link = explode("NEXT", $link);
 
-            print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+            print "<a href=\"#\" class=\"list-group-item col-xs-12 section\">";
             $link_t = "";
             foreach ($link as $value) {
               $link_t .= $value;
             }
-            print "<p class=\"list-group-item-heading col-xs-3\">$link_t</p>";
+            print "<p class=\"list-group-item-heading col-xs-3 course\">$link_t</p>";
             $meeting_t = "";
             foreach ($meeting as $value) {
               $meeting_t .= $value;
             }
-            print "<p class=\"list-group-item-heading col-xs-3\">$meeting_t</p>";
+            print "<p class=\"list-group-item-heading col-xs-3 times\">$meeting_t</p>";
             $faculty_t = "";
             foreach ($faculty as $value) {
               $faculty_t .= $value;
             }
-            print "<p class=\"list-group-item-heading col-xs-3\">$faculty_t</p>";
+            print "<p class=\"list-group-item-heading col-xs-3 faculty\">$faculty_t</p>";
             $capacity_t = "";
             foreach ($capacity as $value) {
               $capacity_t .= $value;
             }
-            print "<p class=\"list-group-item-heading col-xs-3\">$capacity_t</p>";
+            print "<p class=\"list-group-item-heading col-xs-3 capacity\">$capacity_t</p>";
             print "</a>";
           }
         }
@@ -189,5 +189,10 @@
     ?>
     </div>
   </div>
+  <div class="col-md-6 calendar">
+    <?php include("calendar.php"); ?>
+  </div>
   </body>
+  <script src="../js/jquery-3.2.1.min.js"></script>
+  <script src="../js/schedule.js"></script>
 </html>
