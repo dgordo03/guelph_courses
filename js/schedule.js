@@ -1,32 +1,48 @@
 $(document).ready(function() {
-  $(".section").mouseleave(function (e) {
-    var hoverClass = JSON.parse(localStorage['hoverClass']) || NULL;
-    for (var i = 1; i < hoverClass.length; i++) {
+  function calendar(classInfo, color) {
+    for (var i = 1; i < classInfo.length; i++) {
       // add to the schedule
       var schedule = $(".calendar > div");
       var curr_time = 8;
       $.each(schedule, function (el) {
         // add the hover attribute
-        if (curr_time >= hoverClass[i].start && curr_time <= hoverClass[i].end) {
-          if (hoverClass[i].mon) {
-            $(this).find(".mon").css("background-color", "white");
+        if (curr_time >= classInfo[i].start && curr_time <= classInfo[i].end) {
+          if (classInfo[i].mon) {
+            $(this).find(".mon").css("background-color", color);
           }
-          if (hoverClass[i].tues) {
-            $(this).find(".tues").css("background-color", "white");
+          if (classInfo[i].tues) {
+            $(this).find(".tues").css("background-color", color);
           }
-          if (hoverClass[i].wed) {
-            $(this).find(".wed").css("background-color", "white");
+          if (classInfo[i].wed) {
+            $(this).find(".wed").css("background-color", color);
           }
-          if (hoverClass[i].thurs) {
-            $(this).find(".thurs").css("background-color", "white");
+          if (classInfo[i].thurs) {
+            $(this).find(".thurs").css("background-color", color);
           }
-          if (hoverClass[i].fri) {
-            $(this).find(".fri").css("background-color", "white");
+          if (classInfo[i].fri) {
+            $(this).find(".fri").css("background-color", color);
           }
         }
         curr_time += 0.5;
       });
     }
+  }
+
+  $(".section").mouseleave(function (e) {
+    var hoverClass = JSON.parse(localStorage['hoverClass']) || {};
+    var selectedClass = new Object;
+    if (localStorage.getItem('selectedClass')) {
+      selectedClass = JSON.parse(localStorage['selectedClass']);
+    }
+    calendar(hoverClass, "white");
+    calendar(selectedClass, "pink");
+  });
+
+
+  $(".section").click(function (e) {
+    var hoverClass = JSON.parse(localStorage['hoverClass']) || NULL;
+    calendar(hoverClass, "pink");
+    localStorage['selectedClass'] = JSON.stringify(hoverClass);
   });
 
   $(".section").mouseenter(function (e) {
@@ -52,56 +68,28 @@ $(document).ready(function() {
         var hour_t = time_t[0].substring(0,2) / 1;
         var min_t = time_t[0].substring(3,5) / 60;
         var offset_t = time_t[0].search(/PM/) > 0 && hour_t != 12 ? 12 : 0;
-        var clock_t  = hour_t + min_t + offset_t;
-        hoverClass[i].start = clock_t;
+        hoverClass[i].start  = hour_t + min_t + offset_t;
+        // hoverClass[i].start = clock_t;
 
         // convert end time to 24 hr
         var hour_e = time_e[0].substring(0,2) / 1;
         var min_e = time_e[0].substring(3,5) / 60;
         var offset_e = time_e[0].search(/PM/) > 0 && hour_e != 12 ? 12 : 0;
-        var clock_e  = hour_e + min_e + offset_e;
-        hoverClass[i].end = clock_e;
+        hoverClass[i].end  = hour_e + min_e + offset_e;
+        // hoverClass[i].end = clock_e;
 
         // get the days which something occurs
-        var mon = timeslots[i].search(/Mon/g) > 0 ? true : false;
-        var tues = timeslots[i].search(/Tues/g) > 0 ? true : false;
-        var wed = timeslots[i].search(/Wed/g) > 0 ? true : false;
-        var thurs = timeslots[i].search(/Thur/g) > 0 ? true : false;
-        var fri = timeslots[i].search(/Fri/g) > 0 ? true : false;
-        hoverClass[i].mon = mon;
-        hoverClass[i].tues = tues;
-        hoverClass[i].wed = wed;
-        hoverClass[i].thurs = thurs;
-        hoverClass[i].fri = fri;
+        hoverClass[i].mon = timeslots[i].search(/Mon/g) > 0 ? true : false;
+        hoverClass[i].tues = timeslots[i].search(/Tues/g) > 0 ? true : false;
+        hoverClass[i].wed = timeslots[i].search(/Wed/g) > 0 ? true : false;
+        hoverClass[i].thurs = timeslots[i].search(/Thur/g) > 0 ? true : false;
+        hoverClass[i].fri = timeslots[i].search(/Fri/g) > 0 ? true : false;
 
         // add to the cache
         localStorage['hoverClass'] = JSON.stringify(hoverClass);
-
-        // add to the schedule
-        var schedule = $(".calendar > div");
-        var curr_time = 8;
-        $.each(schedule, function (el) {
-          // add the hover attribute
-          if (curr_time >= clock_t && curr_time <= clock_e) {
-            if (mon) {
-              $(this).find(".mon").css("background-color", "blue");
-            }
-            if (tues) {
-              $(this).find(".tues").css("background-color", "blue");
-            }
-            if (wed) {
-              $(this).find(".wed").css("background-color", "blue");
-            }
-            if (thurs) {
-              $(this).find(".thurs").css("background-color", "blue");
-            }
-            if (fri) {
-              $(this).find(".fri").css("background-color", "blue");
-            }
-          }
-          curr_time += 0.5;
-        });
       }
+      // add to the calendar
+      calendar(hoverClass, "red");
     }
   });
 });
