@@ -8,6 +8,7 @@
     <meta name="Author" content="Content">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/modal.css">
+    <link rel="stylesheet" href="../css/schedule.css">
     <style>
       .scroll-section {
         max-height : 200px;
@@ -102,7 +103,7 @@
           ?>
         </div>
         <div class="col-sm-4 col-xs-12">
-          <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#myModal">Search</button>
+          <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#waitModal">Search</button>
         </div>
       </form>
     </div>
@@ -194,12 +195,8 @@
     <?php include("calendar.php"); ?>
   </div>
 
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-    Launch demo modal
-  </button>
   <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="waitModal" tabindex="-1" role="dialog" aria-labelledby="waitModalLabel" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
