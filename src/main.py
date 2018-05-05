@@ -23,6 +23,7 @@ def updateBuildings():
 		       ACRONYM) \
 		       VALUES ('%s', '%s' )" % \
 		       (buildings[building], building)
+		print sql;
 		try:
 			# Execute the SQL command
 			cursor.execute(sql)
@@ -61,6 +62,7 @@ def updateExams():
 					       ROOM, DATE, START, END, COURSE, INSTRUCTOR) \
 					       VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s' )" % \
 					       (building, classroom, date, exam['start'], exam['end'], exam['course'].replace(" ", ""), exam['instructor'].replace('\'', '-'))
+					print sql;
 					try:
 						# Execute the SQL command
 						cursor.execute(sql)
@@ -87,6 +89,7 @@ def updateCurrentCourseInfo():
 			sql = "INSERT INTO %s(%s) \
 			       VALUES ('%s' )" % \
 			       (info.upper(), info.upper()[:-1], terms[info][i])
+			print sql
 			try:
 				# Execute the SQL command
 				cursor.execute(sql)
@@ -141,12 +144,12 @@ def getFaculties():
 def main():
 	# print 'updating buildings...'
 	# updateBuildings()
-	#
+
 	# print '\n\nupdating exam locations...'
 	# updateExams()
 
-	print '\n\nupdating current class information...'
-	updateCurrentCourseInfo()
+	# print '\n\nupdating current class information...'
+	# updateCurrentCourseInfo()
 
 	# print '\n\nupdating faculties'
 	# getFaculties()

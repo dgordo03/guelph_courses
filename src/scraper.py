@@ -68,7 +68,7 @@ def getBuildingCodes():
 
 
 def getExams():
-    url = exam_base + "exam_fall"
+    url = exam_base + "exam_winter"
     response = requests.get(url)
     html = response.content
     soup = BeautifulSoup(html)
@@ -78,6 +78,9 @@ def getExams():
     table = contentDiv.find('table', attrs={'class': 'exams'})
     body = table.find('tbody')
     exams = dict()
+
+
+
     for row in body.findAll('tr'):
         curr_exam = row.findAll('td')
         course = curr_exam[0].text.replace('&nbsp', '')

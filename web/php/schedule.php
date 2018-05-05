@@ -106,6 +106,9 @@
           <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#waitModal">Search</button>
         </div>
       </form>
+      <div class="col-sm-4 col-xs-12">
+        <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear</button>
+      </div>
     </div>
     <div class="col-xs-12 col-md-6 course_information">
     <?php
@@ -200,7 +203,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <h4>Getting Information. Please Wait...</h4>
+          <h4>Gathering Information. Please Wait...</h4>
           <div class="loader"></div>
         </div>
       </div>
