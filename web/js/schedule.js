@@ -99,6 +99,7 @@ $(document).ready(function() {
     if (localStorage.getItem('selectedClass')) {
       calendar(JSON.parse(localStorage['selectedClass']), "white");
     }
+    localStorage.clear();
   });
 
   if (localStorage.getItem('selectedClass')) {

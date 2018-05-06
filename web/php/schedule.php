@@ -107,7 +107,7 @@
         </div>
       </form>
       <div class="col-sm-4 col-xs-12">
-        <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear</button>
+        <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear All Courses</button>
       </div>
     </div>
     <div class="col-xs-12 col-md-6 course_information">
