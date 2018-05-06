@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (sizeof($output) > 0) {
         $id = $args['subject'] . "_" . $args['number'];
         print "<div class=\"tab-pane fade in active\" id=\"$id\">";
+        print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\" class=\"deleteCourse\">Delete $id</button>";
         print "<div class=\"list-group\">";
         print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";

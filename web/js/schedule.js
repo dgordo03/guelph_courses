@@ -1,3 +1,4 @@
+var element;
 $(document).ready(function() {
   function calendar(classInfo, color) {
     for (var i = 1; i < classInfo.length; i++) {
@@ -100,6 +101,13 @@ $(document).ready(function() {
       calendar(JSON.parse(localStorage['selectedClass']), "white");
     }
     localStorage.clear();
+  });
+
+
+  $(".deleteCourse").click(function (el) {
+    console.log($(this).text().split(" ")[1]); // this is the correct course
+    // delete the course before reloading
+    window.location.href = "./schedule.php";
   });
 
   if (localStorage.getItem('selectedClass')) {

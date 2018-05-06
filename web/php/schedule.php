@@ -105,7 +105,7 @@
         <div class="col-sm-4 col-xs-12">
           <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#waitModal" id="searchClass">Search</button>
         </div>
-        <div class="col-sm-4 col-xs-12">
+        <div class="col-sm-offset-4 col-sm-4 col-xs-12">
           <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear All Courses</button>
         </div>
       </form>
