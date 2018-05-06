@@ -95,6 +95,12 @@ $(document).ready(function() {
     }
   });
 
+  $("#clearAllCourses").click(function () {
+    if (localStorage.getItem('selectedClass')) {
+      calendar(JSON.parse(localStorage['selectedClass']), "white");
+    }
+  });
+
   if (localStorage.getItem('selectedClass')) {
     calendar(JSON.parse(localStorage['selectedClass']), "orange");
   }
