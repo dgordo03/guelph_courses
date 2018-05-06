@@ -1,4 +1,3 @@
-<div class="course_information">
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (!empty($_GET['course_term'])) {
@@ -13,16 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $args['level'] = $_GET['course_level'];
     }
     if (sizeof($args) > 3) {
-      $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\src\\getCourse.py';
-      $python = 'C:\\Python27\\python.exe';
-      $args_str = "";
-      foreach ($args as $key => $value) {
-          $args_str .= " {$key}={$value}";
-      }
-      $cmd = "$python $pyscript $args_str";
-      exec($cmd, $output, $ret);
-
+      print "<div class=\"tab-content\">";
       if (sizeof($output) > 0) {
+        $id = $args['subject'] . "_" . $args['number'];
+        print "<div class=\"tab-pane fade in active\" id=\"$id\">";
         print "<div class=\"list-group\">";
         print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";
@@ -31,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<h5 class=\"list-group-item-heading col-xs-3\">Capacity</h5>";
         print "</a>";
       } else {
+        print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
         print "<div class=\"list-group\">";
         print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-12\">No Available Sections</h5>";
@@ -76,15 +70,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<p class=\"list-group-item-heading col-xs-3 capacity\">$capacity_t</p>";
         print "</a>";
       }
+      print "</div></div>";
+      if (sizeof($output) > 0) {
+        print "<div class=\"tab-pane fade\" id=\"new_class\">";
+        print "<div class=\"list-group\">";
+        print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+        print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
+        print "</a></div></div>";
+      }
       print "</div>";
+    } else {
+      // tab-content must be around the entirety of the tabs
+      print "<div class=\"tab-content\">";
+      print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
+      print "<div class=\"list-group\">";
+      print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+      print "<h5 class=\"list-group-item-heading col-xs-12\">All Fields Must be Filled Out</h5>";
+      print "</a></div></div></div>";
     }
   } else {
+    print "<div class=\"tab-content\">";
+    print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
     print "<div class=\"list-group\">";
     print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
     print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
-    print "</a></div>";
+    print "</a></div></div></div>";
   }
 }
 ?>
-  <!-- </div> -->
-</div>

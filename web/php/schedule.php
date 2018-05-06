@@ -99,26 +99,25 @@
               $c_level = $_GET['course_number'];
             }
           }
-          echo "<input type=\"text\" class=\"form-control\" id=\"course_number\" name=\"course_number\" placeholder=\"1000\" value=\"{$c_level}\">";
+          echo "<input type=\"number\" class=\"form-control\" id=\"course_number\" name=\"course_number\" placeholder=\"1000\" value=\"{$c_level}\">";
           ?>
         </div>
         <div class="col-sm-4 col-xs-12">
-          <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#waitModal">Search</button>
+          <button type="submit" class="btn btn-default col-xs-12"  data-toggle="modal" data-target="#waitModal" id="searchClass">Search</button>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear All Courses</button>
         </div>
       </form>
-      <div class="col-sm-4 col-xs-12">
-        <button id="clearAllCourses" type="button" class="btn btn-danger col-xs-12">Clear All Courses</button>
-      </div>
     </div>
     <div class="col-xs-12">
       <div class="col-xs-12 col-md-6">
-        <?php include("courseTable.php") ?>
+        <?php include("courses.php") ?>
       </div>
       <div class="col-xs-12 col-md-6">
         <?php include("calendar.php") ?>
       </div>
     </div>
-
 
   <!-- Modal -->
   <div class="modal fade" id="waitModal" tabindex="-1" role="dialog" aria-labelledby="waitModalLabel" data-backdrop="static" data-keyboard="false">
