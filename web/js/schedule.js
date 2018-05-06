@@ -35,16 +35,16 @@ $(document).ready(function() {
       selectedClass = JSON.parse(localStorage['selectedClass']);
     }
     calendar(hoverClass, "white");
-    calendar(selectedClass, "pink");
+    calendar(selectedClass, "orange");
   });
 
 
   $(".section").click(function (e) {
-    var hoverClass = localStorage.getItem('hoverClass') != null ? JSON.parse(localStorage['hoverClass']) : {};
-    var currClass = localStorage.getItem('selectedClass') != null ? JSON.parse(localStorage['selectedClass']) : {};
-    calendar(currClass, "white");
-    calendar(hoverClass, "pink");
-    localStorage['selectedClass'] = JSON.stringify(hoverClass);
+    if (localStorage.getItem('selectedClass')) {
+      calendar(JSON.parse(localStorage['selectedClass']), "white");
+    }
+    calendar(JSON.parse(localStorage['hoverClass']), "orange");
+    localStorage['selectedClass'] = localStorage['hoverClass'];
   });
 
   $(".section").mouseenter(function (e) {
@@ -91,15 +91,11 @@ $(document).ready(function() {
         localStorage['hoverClass'] = JSON.stringify(hoverClass);
       }
       // add to the calendar
-      calendar(hoverClass, "red");
+      calendar(hoverClass, "#ccffff");
     }
   });
 
-  $("#clearAllCourses").click(function () {
-    // localStorage.clear();
-    // calendar(localStorage, "red");
-  });
-
-  var initialClasses = localStorage.getItem('selectedClass') != null ? JSON.parse(localStorage['selectedClass']) : {};
-  calendar(initialClasses, "pink");
+  if (localStorage.getItem('selectedClass')) {
+    calendar(JSON.parse(localStorage['selectedClass']), "orange");
+  }
 });
