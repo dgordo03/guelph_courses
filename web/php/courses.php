@@ -13,7 +13,7 @@
         $args['level'] = $_GET['course_level'];
       }
       if (sizeof($args) > 3) {
-        $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\src\\getCourse.py';
+        $pyscript = 'C:\\xampp\\htdocs\\GitHub\\guelph_courses\\py\\getCourse.py';
         $python = 'C:\\Python27\\python.exe';
         $args_str = "";
         foreach ($args as $key => $value) {

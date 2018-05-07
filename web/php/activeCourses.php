@@ -14,22 +14,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (sizeof($args) > 3) {
       if (sizeof($output) > 0) {
         $id = $args['subject'] . "_" . $args['number'];
-        print "<ul class=\"nav nav-pills\">";
+        print "<ul class=\"nav nav-pills classPills\">";
         print "<li class=\"active\"><a data-toggle=\"pill\" href=\"#$id\">$id</a></li>";
         print "<li><a data-toggle=\"pill\" href=\"#new_class\">New Class</a></li>";
         print "</ul>";
       } else {
-        print "<ul class=\"nav nav-pills\">";
+        print "<ul class=\"nav nav-pills classPills\">";
         print "<li role=\"presentation\" class=\"active\"><a data-toggle=\"pill\" href=\"#new_class\">New Class</a></li>";
         print "</ul>";
       }
     } else {
-      print "<ul class=\"nav nav-pills\">";
+      print "<ul class=\"nav nav-pills classPills\">";
       print "<li role=\"presentation\" class=\"active\"><a data-toggle=\"pill\" href=\"#new_class\">New Class</a></li>";
       print "</ul>";
     }
   } else {
-    print "<ul class=\"nav nav-pills\">";
+    print "<ul class=\"nav nav-pills classPills\">";
     print "<li role=\"presentation\" class=\"active\"><a data-toggle=\"pill\" href=\"#new_class\">New Class</a></li>";
     print "</ul>";
   }

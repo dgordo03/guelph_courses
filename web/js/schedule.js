@@ -110,6 +110,25 @@ $(document).ready(function() {
     window.location.href = "./schedule.php";
   });
 
+  $("#searchClass").click(function () {
+    $(".classPills > li").each(function () {
+      if ($(this).attr("class") == "active") {
+        if ($(this).text() != "New Class") {
+          // delete the info on the current class
+          $.ajax({
+              url: './deleteFile.php',
+              type: 'GET',
+              data: {
+                  class : $(this).text()
+              }
+          }).done(function(data){
+            console.log("done");
+          });
+        }
+      }
+    });
+  });
+
   if (localStorage.getItem('selectedClass')) {
     calendar(JSON.parse(localStorage['selectedClass']), "orange");
   }
