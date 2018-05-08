@@ -15,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       print "<div class=\"tab-content\">";
       if (sizeof($output) > 0) {
         $id = $args['subject'] . "_" . $args['number'];
+        // save to a file
+        $fp = fopen("../../files/$id", "w");
+
         print "<div class=\"tab-pane fade in active\" id=\"$id\">";
         print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\" class=\"deleteCourse\">Delete $id</button>";
         print "<div class=\"list-group\">";
@@ -34,6 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
       foreach ($output as $iter) {
         // split up the information from one another
+        if ($fp) {
+          fwrite($fp, $iter . "\n");
+        }
         $temp = explode("meeting=", $iter);
         $temp = explode("faculty=", $temp[1]);
         $meeting = $temp[0];
@@ -71,6 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<p class=\"list-group-item-heading col-xs-3 capacity\">$capacity_t</p>";
         print "</a>";
       }
+
+      if ($fp) {
+        fclose($fp);
+      }
+
       print "</div></div>";
       if (sizeof($output) > 0) {
         print "<div class=\"tab-pane fade\" id=\"new_class\">";
