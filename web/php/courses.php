@@ -26,10 +26,12 @@
   }
    ?>
 <div class="col-xs-12">
-  <!-- need to add way to keep the current courses and replace as necessary -->
   <?php include("activeCourses.php") ?>
 </div>
 <div class="col-xs-12">
-  <?php include("courseRequestTable.php") ?>
+  <div class="tab-content">
+    <?php include("DBcourseTable.php") ?>
+    <?php include("courseRequestTable.php") ?>
+  </div>
 </div>
 </div>

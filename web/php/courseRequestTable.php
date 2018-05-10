@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $args['level'] = $_GET['course_level'];
     }
     if (sizeof($args) > 3) {
-      print "<div class=\"tab-content\">";
+      // print "<div class=\"tab-content\">";
       if (sizeof($output) > 0) {
         $id = $args['subject'] . "_" . $args['number'];
 
@@ -95,6 +95,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         print "<p class=\"list-group-item-heading col-xs-3 capacity\">$capacity_t</p>";
         print "</a>";
+
+        // add class to the database
+        $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+        $query = "SELECT * FROM classes_information";
+        if ($r = mysqli_query($dbc, $query)) {
+          $addToDB = true;
+          while ($row = mysqli_fetch_array($r)) {
+            if ($row['link'] == $link_t) {
+              $addToDB = false;
+              break;
+            }
+            // print "<li><a data-toggle=\"pill\" href=\"#" . $row['class'] . "\">" . $row['class'] . "</a></li>";
+          }
+          if ($addToDB) {
+            $r = mysqli_query($dbc, $query);
+            $query = "INSERT INTO classes_information (class, link, meeting, faculty, capacity)
+              VALUES ('$id', '$link_t', '$meeting_t', '$faculty_t', '$capacity_t')";
+            $r = mysqli_query($dbc, $query);
+          }
+        } else { // create a table if one doesn't exist
+          $query = "CREATE TABLE classes_information (
+            class varchar(255),
+            link varchar(255),
+            meeting varchar(255),
+            faculty varchar(255),
+            capacity varchar(255) )";
+          $r = mysqli_query($dbc, $query);
+          $query = "INSERT INTO classes_information (class, link, meeting, faculty, capacity)
+            VALUES ('$id', '$link_t', '$meeting_t', '$faculty_t', '$capacity_t')";
+          $r = mysqli_query($dbc, $query);
+        }
+        mysqli_close($dbc);
       }
 
       print "</div></div>";
@@ -105,23 +137,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
         print "</a></div></div>";
       }
-      print "</div>";
+      // print "</div>";
     } else {
       // tab-content must be around the entirety of the tabs
-      print "<div class=\"tab-content\">";
+      // print "<div class=\"tab-content\">";
       print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
       print "<div class=\"list-group\">";
       print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
       print "<h5 class=\"list-group-item-heading col-xs-12\">All Fields Must be Filled Out</h5>";
-      print "</a></div></div></div>";
+      print "</a></div>";
     }
   } else {
-    print "<div class=\"tab-content\">";
+    // print "<div class=\"tab-content\">";
     print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
     print "<div class=\"list-group\">";
     print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
     print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
-    print "</a></div></div></div>";
+    print "</a></div></div>";
   }
 }
 ?>
