@@ -15,8 +15,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       print "<div class=\"tab-content\">";
       if (sizeof($output) > 0) {
         $id = $args['subject'] . "_" . $args['number'];
-        // save to a file
-        $fp = fopen("../../files/$id", "w");
+
+        // add class to the database
+        $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+        $query = "SELECT * FROM classes";
+        if ($r = mysqli_query($dbc, $query)) {
+          $addToDB = true;
+          while ($row = mysqli_fetch_array($r)) {
+            if ($row['class'] == $id) {
+              $addToDB = false;
+              break;
+            }
+            // print "<li><a data-toggle=\"pill\" href=\"#" . $row['class'] . "\">" . $row['class'] . "</a></li>";
+          }
+          if ($addToDB) {
+            $query = "INSERT INTO classes (class) VALUES ('$id')";
+            $r = mysqli_query($dbc, $query);
+          }
+        }
+        else { // create a table if one doesn't exist
+          $query = "CREATE TABLE classes ( class varchar(255) )";
+          $r = mysqli_query($dbc, $query);
+          $query = "INSERT INTO classes (class) VALUES ('$id')";
+          $r = mysqli_query($dbc, $query);
+        }
+        mysqli_close($dbc);
 
         print "<div class=\"tab-pane fade in active\" id=\"$id\">";
         print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\" class=\"deleteCourse\">Delete $id</button>";
@@ -36,10 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
 
       foreach ($output as $iter) {
-        // split up the information from one another
-        if ($fp) {
-          fwrite($fp, $iter . "\n");
-        }
         $temp = explode("meeting=", $iter);
         $temp = explode("faculty=", $temp[1]);
         $meeting = $temp[0];
@@ -76,10 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         print "<p class=\"list-group-item-heading col-xs-3 capacity\">$capacity_t</p>";
         print "</a>";
-      }
-
-      if ($fp) {
-        fclose($fp);
       }
 
       print "</div></div>";

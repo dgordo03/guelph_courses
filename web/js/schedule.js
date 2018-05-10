@@ -104,8 +104,16 @@ $(document).ready(function() {
   });
 
 
-  $(".deleteCourse").click(function (el) {
-    console.log($(this).text().split(" ")[1]); // this is the correct course
+  $(".deleteCourse").click(function () {
+    // var delClass = "rm -r ../../" +  $(this).text().split(" ")[1];
+    // console.log($(this).text().split(" ")[1]);
+    $.ajax({
+        url: './deleteFile.php',
+        type: 'GET',
+        data: {
+            class : $(this).text().split(" ")[1]
+        }
+    });
     // delete the course before reloading
     window.location.href = "./schedule.php";
   });
@@ -121,8 +129,6 @@ $(document).ready(function() {
               data: {
                   class : $(this).text()
               }
-          }).done(function(data){
-            console.log("done");
           });
         }
       }
