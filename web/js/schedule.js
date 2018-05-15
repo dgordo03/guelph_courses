@@ -31,7 +31,7 @@ $(document).ready(function() {
 
   function deleteClass(className) {
     $.ajax({
-        url: './deleteFile.php',
+        url: './deleteClass.php',
         type: 'GET',
         data: {
             class : className
@@ -130,13 +130,7 @@ $(document).ready(function() {
       if ($(this).attr("class") == "active") {
         if ($(this).text() != "New Class") {
           // delete the info on the current class
-          $.ajax({
-              url: './deleteFile.php',
-              type: 'GET',
-              data: {
-                  class : $(this).text()
-              }
-          });
+          deleteClass($(this).text());
         }
       }
     });
