@@ -29,6 +29,16 @@ $(document).ready(function() {
     }
   }
 
+  function deleteClass(className) {
+    $.ajax({
+        url: './deleteFile.php',
+        type: 'GET',
+        data: {
+            class : className
+        }
+    });
+  }
+
   $(".section").mouseleave(function (e) {
     var hoverClass = JSON.parse(localStorage['hoverClass']) || {};
     var selectedClass = new Object;
@@ -100,22 +110,19 @@ $(document).ready(function() {
     if (localStorage.getItem('selectedClass')) {
       calendar(JSON.parse(localStorage['selectedClass']), "white");
     }
+
+    $(".classPills > li").each(function () {
+      deleteClass($(this).text());
+    });
+
     localStorage.clear();
+    window.location = window.location.pathname;
   });
 
 
   $(".deleteCourse").click(function () {
-    // var delClass = "rm -r ../../" +  $(this).text().split(" ")[1];
-    // console.log($(this).text().split(" ")[1]);
-    $.ajax({
-        url: './deleteFile.php',
-        type: 'GET',
-        data: {
-            class : $(this).text().split(" ")[1]
-        }
-    });
-    // delete the course before reloading
-    window.location.href = "./schedule.php";
+    deleteClass($(this).text().split(" ")[1]);
+    window.location = window.location.pathname;
   });
 
   $("#searchClass").click(function () {
