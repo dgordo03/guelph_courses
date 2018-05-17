@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         mysqli_close($dbc);
 
         print "<div class=\"tab-pane fade in active\" id=\"$id\">";
-        print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\" class=\"deleteCourse\">Delete $id</button>";
+        print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\">Delete $id</button>";
+        print "<button type=\"button\" class=\"btn btn-warning col-xs-12 removeCourse\">Remove $id</button>";
         print "<div class=\"list-group\">";
         print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";

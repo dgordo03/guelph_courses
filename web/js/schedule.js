@@ -1,57 +1,117 @@
-$(document).ready(function() {
-  function getActiveClass() {
-    var className;
-    $(".classPills > li").each(function () {
-      if ($(this).hasClass('active')) {
-        className = $(this).text();
+var activeColours = new Object;
+
+function getActiveClass() {
+  var className;
+  $(".classPills > li").each(function () {
+    if ($(this).hasClass('active')) {
+      className = $(this).text();
+    }
+  });
+  return className;
+}
+
+function decToHex(decimal) {
+  var remainder;
+  var remaining = decimal;
+  var hex = "";
+  do {
+    remainder = remaining % 16;
+    remaining = Math.floor(remaining / 16);
+    // > 9 ? change to A - F
+    var current;
+    switch (remainder) {
+      case 10:
+        current = "A";
+        break;
+      case 11:
+        current = "B";
+        break;
+      case 12:
+        current = "C";
+        break;
+      case 13:
+        current = "D";
+        break;
+      case 14:
+        current = "E";
+        break;
+      case 15:
+        current = "F";
+        break;
+      default:
+        current = remainder;
+        break;
+    }
+    hex = current + hex;
+  } while (remaining > 0);
+  hex = "#" + hex;
+  return hex;
+}
+
+function randomColour() {
+  var colour;
+  colour = Math.floor(Math.random()*16777215);
+  colour = decToHex(colour);
+  return colour;
+}
+
+function selectNewColour() {
+  do {
+    var curr_colour = randomColour();
+    var new_colour = true;
+    $.each(activeColours, function (key, value) {
+      if (value == curr_colour) {
+        new_colour = false;
       }
     });
-    return className;
-  }
+  } while (!new_colour);
+  return curr_colour;
+}
 
-  function calendar(classInfo, color, className) {
-    for (var i = 1; i < classInfo.length; i++) {
-      // add to the schedule
-      var schedule = $(".calendar > div");
-      var curr_time = 8;
-      $.each(schedule, function (el) {
-        // add the hover attribute
-        if (curr_time >= classInfo[i].start && curr_time <= classInfo[i].end) {
-          if (classInfo[i].mon) {
-            $(this).find(".mon").css("background-color", color);
-            $(this).find(".mon").text(className);
-          }
-          if (classInfo[i].tues) {
-            $(this).find(".tues").css("background-color", color);
-            $(this).find(".tues").text(className);
-          }
-          if (classInfo[i].wed) {
-            $(this).find(".wed").css("background-color", color);
-            $(this).find(".wed").text(className);
-          }
-          if (classInfo[i].thurs) {
-            $(this).find(".thurs").css("background-color", color);
-            $(this).find(".thurs").text(className);
-          }
-          if (classInfo[i].fri) {
-            $(this).find(".fri").css("background-color", color);
-            $(this).find(".fri").text(className);
-          }
+function calendar(classInfo, color, className) {
+  for (var i = 1; i < classInfo.length; i++) {
+    // add to the schedule
+    var schedule = $(".calendar > div");
+    var curr_time = 8;
+    $.each(schedule, function (el) {
+      // add the hover attribute
+      if (curr_time >= classInfo[i].start && curr_time <= classInfo[i].end) {
+        if (classInfo[i].mon) {
+          $(this).find(".mon").css("background-color", color);
+          $(this).find(".mon").text(className);
         }
-        curr_time += 0.5;
-      });
-    }
-  }
-
-  function deleteClass(className) {
-    $.ajax({
-        url: './deleteClass.php',
-        type: 'GET',
-        data: {
-            class : className
+        if (classInfo[i].tues) {
+          $(this).find(".tues").css("background-color", color);
+          $(this).find(".tues").text(className);
         }
+        if (classInfo[i].wed) {
+          $(this).find(".wed").css("background-color", color);
+          $(this).find(".wed").text(className);
+        }
+        if (classInfo[i].thurs) {
+          $(this).find(".thurs").css("background-color", color);
+          $(this).find(".thurs").text(className);
+        }
+        if (classInfo[i].fri) {
+          $(this).find(".fri").css("background-color", color);
+          $(this).find(".fri").text(className);
+        }
+      }
+      curr_time += 0.5;
     });
   }
+}
+
+function deleteClass(className) {
+  $.ajax({
+    url: './deleteClass.php',
+    type: 'GET',
+    data: {
+      class : className
+    }
+  });
+}
+$(document).ready(function() {
 
   $(".section").mouseleave(function (e) {
     var className = getActiveClass();
@@ -61,7 +121,9 @@ $(document).ready(function() {
       selectedClass = JSON.parse(localStorage[className]);
     }
     calendar(hoverClass, "white", "");
-    calendar(selectedClass, "orange", className);
+    var colour;
+    className in activeColours ? colour = activeColours[className] : colour = selectNewColour();
+    calendar(selectedClass, colour, className);
   });
 
   $(".section").click(function (e) {
@@ -70,8 +132,10 @@ $(document).ready(function() {
       calendar(JSON.parse(localStorage[className]), "white", "");
     }
     localStorage[className] = localStorage['hoverClass'];
-    calendar(JSON.parse(localStorage[className]), "orange", className);
-    // localStorage['selectedClass'] = localStorage['hoverClass'];
+    var colour;
+    className in activeColours ? colour = activeColours[className] : colour = selectNewColour();
+    activeColours[className] = colour;
+    calendar(JSON.parse(localStorage[className]), colour, className);
   });
 
   $(".section").mouseenter(function (e) {
@@ -145,6 +209,14 @@ $(document).ready(function() {
     window.location = window.location.pathname;
   });
 
+  $(".removeCourse").click(function () {
+    var className = $(this).text().split(" ")[1];
+    if (localStorage.getItem(className)) {
+      calendar(JSON.parse(localStorage[className]), "white", "");
+      localStorage.removeItem(className);
+    }
+  });
+
   $("#searchClass").click(function () {
     $(".classPills > li").each(function () {
       if ($(this).attr("class") == "active") {
@@ -159,7 +231,10 @@ $(document).ready(function() {
   $(".classPills > li").each(function () {
     var curr_class = $(this).text();
     if (localStorage.getItem(curr_class)) {
-      calendar(JSON.parse(localStorage[curr_class]), "orange", curr_class);
+      var colour;
+      curr_class in activeColours ? colour = activeColours[curr_class] : colour = selectNewColour();
+      activeColours[curr_class] = colour;
+      calendar(JSON.parse(localStorage[curr_class]), colour, curr_class);
     }
   });
 });

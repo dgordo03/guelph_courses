@@ -7,7 +7,8 @@ if ($r = mysqli_query($dbc, $query)) {
     $q = "SELECT * FROM classes_information WHERE class='" . $row['class'] . "'";
     if ($c_r = mysqli_query($dbc, $q)) {
       print "<div class=\"tab-pane fade\" id=\"" . $row['class'] . "\">";
-        print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\" class=\"deleteCourse\">Delete " . $row['class'] . "</button>";
+        print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\">Delete " . $row['class'] . "</button>";
+        print "<button type=\"button\" class=\"btn btn-warning col-xs-12 removeCourse\">Remove " . $row['class'] . "</button>";
         print "<div class=\"list-group\">";
             print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
             print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";
