@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\">Delete $id</button>";
         print "<button type=\"button\" class=\"btn btn-warning col-xs-12 removeCourse\">Remove $id</button>";
         print "<div class=\"list-group\">";
-        print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+        print "<a class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Times</h5>";
         print "<h5 class=\"list-group-item-heading col-xs-3\">Faculty</h5>";
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       } else {
         print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
         print "<div class=\"list-group\">";
-        print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+        print "<a class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-12\">No Available Sections</h5>";
         print "</a>";
       }
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $capacity = explode("NEXT", $capacity);
         $link = explode("NEXT", $link);
 
-        print "<a href=\"#\" class=\"list-group-item col-xs-12 section\">";
+        print "<a class=\"list-group-item col-xs-12 section\">";
         $link_t = "";
         foreach ($link as $value) {
           $link_t .= $value;
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (sizeof($output) > 0) {
         print "<div class=\"tab-pane fade\" id=\"new_class\">";
         print "<div class=\"list-group\">";
-        print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+        print "<a class=\"list-group-item col-xs-12\">";
         print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
         print "</a></div></div>";
       }
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       // print "<div class=\"tab-content\">";
       print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
       print "<div class=\"list-group\">";
-      print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+      print "<a class=\"list-group-item col-xs-12\">";
       print "<h5 class=\"list-group-item-heading col-xs-12\">All Fields Must be Filled Out</h5>";
       print "</a></div>";
     }
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // print "<div class=\"tab-content\">";
     print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
     print "<div class=\"list-group\">";
-    print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+    print "<a class=\"list-group-item col-xs-12\">";
     print "<h5 class=\"list-group-item-heading col-xs-12\">Search for a Class to Begin</h5>";
     print "</a></div></div>";
   }

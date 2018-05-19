@@ -10,7 +10,7 @@ if ($r = mysqli_query($dbc, $query)) {
         print "<button type=\"button\" class=\"btn btn-danger col-xs-12 deleteCourse\">Delete " . $row['class'] . "</button>";
         print "<button type=\"button\" class=\"btn btn-warning col-xs-12 removeCourse\">Remove " . $row['class'] . "</button>";
         print "<div class=\"list-group\">";
-            print "<a href=\"#\" class=\"list-group-item col-xs-12\">";
+            print "<a class=\"list-group-item col-xs-12\">";
             print "<h5 class=\"list-group-item-heading col-xs-3\">Course</h5>";
             print "<h5 class=\"list-group-item-heading col-xs-3\">Times</h5>";
             print "<h5 class=\"list-group-item-heading col-xs-3\">Faculty</h5>";
@@ -19,7 +19,7 @@ if ($r = mysqli_query($dbc, $query)) {
         print "</div>";
       while ($c_row = mysqli_fetch_array($c_r)) {
         // here is the information
-        print "<a href=\"#\" class=\"list-group-item col-xs-12 section\">";
+        print "<a class=\"list-group-item col-xs-12 section\">";
         print "<p class=\"list-group-item-heading col-xs-3 course\">" . $c_row['link'] . "</p>";
         print "<p class=\"list-group-item-heading col-xs-3 times\">" . $c_row['meeting'] . "</p>";
         print "<p class=\"list-group-item-heading col-xs-3 faculty\">" . $c_row['faculty'] . "</p>";

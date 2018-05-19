@@ -1,4 +1,5 @@
 var activeColours = new Object;
+var overlapping_classes;
 
 function getActiveClass() {
   var className;
@@ -73,26 +74,42 @@ function calendar(classInfo, color, className) {
     // add to the schedule
     var schedule = $(".calendar > div");
     var curr_time = 8;
+    var overlap = false;
     $.each(schedule, function (el) {
       // add the hover attribute
       if (curr_time >= classInfo[i].start && curr_time <= classInfo[i].end) {
         if (classInfo[i].mon) {
+          if ($(this).find(".mon").text().length > 0 && $(this).find(".mon").text() != className) {
+            overlap = true;
+          }
           $(this).find(".mon").css("background-color", color);
           $(this).find(".mon").text(className);
         }
         if (classInfo[i].tues) {
+          if ($(this).find(".tues").text().length > 0 && $(this).find(".tues").text() != className) {
+            overlap = true;
+          }
           $(this).find(".tues").css("background-color", color);
           $(this).find(".tues").text(className);
         }
         if (classInfo[i].wed) {
+          if ($(this).find(".wed").text().length > 0 && $(this).find(".wed").text() != className) {
+            overlap = true;
+          }
           $(this).find(".wed").css("background-color", color);
           $(this).find(".wed").text(className);
         }
         if (classInfo[i].thurs) {
+          if ($(this).find(".thurs").text().length > 0 && $(this).find(".thurs").text() != className) {
+            overlap = true;
+          }
           $(this).find(".thurs").css("background-color", color);
           $(this).find(".thurs").text(className);
         }
         if (classInfo[i].fri) {
+          if ($(this).find(".fri").text().length > 0 && $(this).find(".fri").text() != className) {
+            overlap = true;
+          }
           $(this).find(".fri").css("background-color", color);
           $(this).find(".fri").text(className);
         }
@@ -100,6 +117,7 @@ function calendar(classInfo, color, className) {
       curr_time += 0.5;
     });
   }
+  return overlap;
 }
 
 function deleteClass(className) {
@@ -111,31 +129,49 @@ function deleteClass(className) {
     }
   });
 }
+
 $(document).ready(function() {
+
+  function updateTable() {
+    $(".classPills > li").each(function () {
+      var curr_class = $(this).text();
+      if (sessionStorage.getItem(curr_class)) {
+        var colour;
+        curr_class in activeColours ? colour = activeColours[curr_class] : colour = selectNewColour();
+        activeColours[curr_class] = colour;
+        calendar(JSON.parse(sessionStorage[curr_class]), colour, curr_class);
+      }
+    });
+  }
 
   $(".section").mouseleave(function (e) {
     var className = getActiveClass();
-    var hoverClass = JSON.parse(localStorage['hoverClass']) || {};
+    var hoverClass = JSON.parse(sessionStorage['hoverClass']) || {};
     var selectedClass = new Object;
-    if (localStorage.getItem(className)) {
-      selectedClass = JSON.parse(localStorage[className]);
+    if (sessionStorage.getItem(className)) {
+      selectedClass = JSON.parse(sessionStorage[className]);
     }
     calendar(hoverClass, "white", "");
     var colour;
     className in activeColours ? colour = activeColours[className] : colour = selectNewColour();
     calendar(selectedClass, colour, className);
+    updateTable();
   });
 
   $(".section").click(function (e) {
-    var className = getActiveClass();
-    if (localStorage.getItem(className)) {
-      calendar(JSON.parse(localStorage[className]), "white", "");
+    if (overlapping_classes) {
+      return;
     }
-    localStorage[className] = localStorage['hoverClass'];
+    var className = getActiveClass();
+    if (sessionStorage.getItem(className)) {
+      calendar(JSON.parse(sessionStorage[className]), "white", "");
+    }
+    sessionStorage[className] = sessionStorage['hoverClass'];
     var colour;
     className in activeColours ? colour = activeColours[className] : colour = selectNewColour();
     activeColours[className] = colour;
-    calendar(JSON.parse(localStorage[className]), colour, className);
+    calendar(JSON.parse(sessionStorage[className]), colour, className);
+    updateTable();
   });
 
   $(".section").mouseenter(function (e) {
@@ -179,23 +215,31 @@ $(document).ready(function() {
         hoverClass[i].fri = timeslots[i].search(/Fri/g) > 0 ? true : false;
 
         // add to the cache
-        localStorage['hoverClass'] = JSON.stringify(hoverClass);
+        sessionStorage['hoverClass'] = JSON.stringify(hoverClass);
       }
       // add to the calendar
-      calendar(hoverClass, "#ccffff", className);
+      updateTable();
+      overlapping_classes = calendar(hoverClass, "#ccffff", className);
+      if (overlapping_classes) {
+        $(this).addClass("overlap_class");
+        $(this).removeClass("new_class");
+      } else {
+        $(this).removeClass("overlap_class");
+        $(this).addClass("new_class");
+      }
     }
   });
 
   $("#clearAllCourses").click(function () {
-    if (localStorage.getItem('selectedClass')) {
-      calendar(JSON.parse(localStorage['selectedClass']), "white", "");
+    if (sessionStorage.getItem('selectedClass')) {
+      calendar(JSON.parse(sessionStorage['selectedClass']), "white", "");
     }
 
     $(".classPills > li").each(function () {
       deleteClass($(this).text());
     });
 
-    localStorage.clear();
+    sessionStorage.clear();
     window.location = window.location.pathname;
   });
 
@@ -203,17 +247,17 @@ $(document).ready(function() {
   $(".deleteCourse").click(function () {
     var className = $(this).text().split(" ")[1];
     deleteClass(className);
-    if (localStorage.getItem(className)) {
-      localStorage.removeItem(className);
+    if (sessionStorage.getItem(className)) {
+      sessionStorage.removeItem(className);
     }
     window.location = window.location.pathname;
   });
 
   $(".removeCourse").click(function () {
     var className = $(this).text().split(" ")[1];
-    if (localStorage.getItem(className)) {
-      calendar(JSON.parse(localStorage[className]), "white", "");
-      localStorage.removeItem(className);
+    if (sessionStorage.getItem(className)) {
+      calendar(JSON.parse(sessionStorage[className]), "white", "");
+      sessionStorage.removeItem(className);
     }
   });
 
@@ -228,13 +272,5 @@ $(document).ready(function() {
     });
   });
 
-  $(".classPills > li").each(function () {
-    var curr_class = $(this).text();
-    if (localStorage.getItem(curr_class)) {
-      var colour;
-      curr_class in activeColours ? colour = activeColours[curr_class] : colour = selectNewColour();
-      activeColours[curr_class] = colour;
-      calendar(JSON.parse(localStorage[curr_class]), colour, curr_class);
-    }
-  });
+  updateTable();
 });

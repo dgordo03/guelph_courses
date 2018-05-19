@@ -9,3 +9,11 @@
 .rectangle {
   height: 20px;
 }
+
+.overlap_class {
+  cursor: not-allowed;
+}
+
+.new_class {
+  cursor: pointer;
+}
