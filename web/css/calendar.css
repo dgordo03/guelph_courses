@@ -17,3 +17,7 @@
 .new_class {
   cursor: pointer;
 }
+
+.alter_colour {
+  color: red;
+}

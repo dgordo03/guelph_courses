@@ -1,6 +1,11 @@
 <?php
 // create tabke for all previously searched courses
-$dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+
+$dbc = mysqli_connect('localhost', 'admin', 'admin', $_SESSION["session_id"]);
 $query = "SELECT * FROM classes";
 if ($r = mysqli_query($dbc, $query)) {
   while ($row = mysqli_fetch_array($r)) {

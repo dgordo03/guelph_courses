@@ -1,4 +1,8 @@
 <?php
+if (!isset($_SESSION)) {
+  session_start();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (!empty($_GET['course_term'])) {
     $args['term'] = $_GET['course_term'];
@@ -17,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $id = $args['subject'] . "_" . $args['number'];
 
         // add class to the database
-        $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+        $dbc = mysqli_connect('localhost', 'admin', 'admin', $_SESSION["session_id"]);
         $query = "SELECT * FROM classes";
         if ($r = mysqli_query($dbc, $query)) {
           $addToDB = true;
@@ -55,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "<div class=\"tab-pane fade in active\" id=\"new_class\">";
         print "<div class=\"list-group\">";
         print "<a class=\"list-group-item col-xs-12\">";
-        print "<h5 class=\"list-group-item-heading col-xs-12\">No Available Sections</h5>";
+        print "<h5 class=\"list-group-item-heading col-xs-12\"><span class=\"alter_colour\">" . $_GET['course_subject'] . " " . $_GET['course_number'] . "</span> Has No Available Sections</h5>";
         print "</a>";
       }
 
@@ -98,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print "</a>";
 
         // add class to the database
-        $dbc = mysqli_connect('localhost', 'admin', 'admin', 'information');
+        $dbc = mysqli_connect('localhost', 'admin', 'admin', $_SESSION["session_id"]);
         $query = "SELECT * FROM classes_information";
         if ($r = mysqli_query($dbc, $query)) {
           $addToDB = true;

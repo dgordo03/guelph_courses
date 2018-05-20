@@ -1,3 +1,5 @@
+<?php include("open_session.php") ?>
+<?php print_r($_SESSION["session_id"]); ?>
 <!DOCTYPE html>
 <html>
   <head>
